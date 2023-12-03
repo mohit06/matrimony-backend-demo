@@ -39,11 +39,11 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 		// TODO Auto-generated method stub
 		System.out.println("METHOD CALLED");
 		return (exchange,chain)->{
-			System.out.println("jjjjjjjjjjj123");
+			
 			ServerHttpRequest request = exchange.getRequest();
 			String username = null;
 			if(rv.isSecured.test(request)) {
-				System.out.println("request received!!!!");
+				
 				if(!request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
 					throw new RuntimeException("Missing Authorization Header");
 				}
@@ -52,17 +52,17 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
 					authHeader=authHeader.substring(7);
 					username = util.extractUsername(authHeader);
 				}
-				System.out.println(username);
+				
 				if (username != null && SecurityContextHolder.getContext().getAuthentication() == null) {
 					UserDetails userDetails = userDetailsService.loadUserByUsername(username);
-					System.out.println("jjjjjjjjjjjjjjj");
+					
 					if (util.validateToken(authHeader, userDetails)) {
 						UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(userDetails,
 								null, userDetails.getAuthorities());
 						//authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request.));
 						authToken.setDetails(userDetails);
 						SecurityContextHolder.getContext().setAuthentication(authToken);
-						System.out.println("lklllllllllllllllllllll");
+						
 						
 					}
 				}
